@@ -1,11 +1,35 @@
-import { Page } from ".";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
+import type { Router } from "@remix-run/router";
+import ErrorPage from "../pages/Error";
+import { AuthState } from "../state/interfaces";
+import { LoginPage } from "../pages/LoginPage";
 
-export const HomePage = () => <h1>Home</h1>;
-export const LoginPage = () => <h1>Login</h1>;
-export const ProfilePage = () => <h1>Profile</h1>;
-
-export const pages: Page[] = [
-  { path: "/", component: <HomePage />, isPublic: true },
-  { path: "/login", component: <LoginPage />, isPublic: true },
-  { path: "/profile", component: <ProfilePage />, isPublic: false },
-];
+export const createRouter = (auth: AuthState): Router => {
+  return createBrowserRouter([
+    {
+      path: "/",
+      element: <Outlet />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "/login",
+          element: auth.user ? <Navigate to={"/"} /> : <LoginPage />,
+        },
+        {
+          path: "/",
+          element: auth.user ? <Outlet /> : <Navigate to={"/login"} />,
+          children: [
+            {
+              path: "/",
+              element: <div>Home</div>,
+            },
+            {
+              path: "/about",
+              element: <div>About</div>,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+};
