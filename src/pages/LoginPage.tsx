@@ -11,13 +11,16 @@ import {
   Divider,
   Stack,
 } from "@mantine/core";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
+import { authLogin } from "../state/thunks";
 
 export function LoginPage(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.auth);
   const form = useForm({
     initialValues: {
-      user: "",
-      password: "",
+      username: "gbrassini",
+      password: "123456",
     },
   });
 
@@ -35,15 +38,23 @@ export function LoginPage(props: PaperProps) {
         DeslizaT - Administrador de taller
       </Text>
 
-      <Divider label="Inicie sesión para continuar" labelPosition="center" my="lg" />
+      <Divider
+        label="Inicie sesión para continuar"
+        labelPosition="center"
+        my="lg"
+      />
 
-      <form onSubmit={form.onSubmit(() => {})}>
+      <form
+        onSubmit={form.onSubmit(() => {
+          dispatch(authLogin(form.values));
+        })}
+      >
         <Stack>
           <TextInput
             required
             label="Usuario"
             placeholder="hperez"
-            value={form.values.user}
+            value={form.values.username}
             onChange={(event) =>
               form.setFieldValue("user", event.currentTarget.value)
             }
@@ -64,8 +75,8 @@ export function LoginPage(props: PaperProps) {
           />
         </Stack>
 
-        <Group position="apart" mt="xl" display={'flex'} justify-content-end>
-          <Button type="submit" radius="xl">
+        <Group position="apart" mt="xl" display={"flex"}>
+          <Button type="submit" radius="xl" loading={loading}>
             Entrar
           </Button>
         </Group>

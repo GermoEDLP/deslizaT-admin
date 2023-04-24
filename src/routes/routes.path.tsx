@@ -3,6 +3,9 @@ import type { Router } from "@remix-run/router";
 import ErrorPage from "../pages/Error";
 import { AuthState } from "../state/interfaces";
 import { LoginPage } from "../pages/LoginPage";
+import { HomePage } from "../pages/HomePage";
+import { ClientesPage, OrdersPage, StoragePage } from "../pages/AdminPages";
+import { BikesPage } from '../pages/AdminPages/BikesPage';
 
 export const createRouter = (auth: AuthState): Router => {
   return createBrowserRouter([
@@ -21,7 +24,25 @@ export const createRouter = (auth: AuthState): Router => {
           children: [
             {
               path: "/",
-              element: <div>Home</div>,
+              element: <HomePage />,
+              children: [
+                {
+                  path: "/clients",
+                  element: <ClientesPage />,
+                },
+                {
+                  path: "/orders",
+                  element: <OrdersPage/>,
+                },
+                {
+                  path: "/storage",
+                  element: <StoragePage />,
+                },
+                {
+                  path: "/bikes",
+                  element: <BikesPage/>,
+                }
+              ],
             },
             {
               path: "/about",
