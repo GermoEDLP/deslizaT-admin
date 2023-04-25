@@ -9,14 +9,32 @@ import {
 import { LinksGroup } from "../components/NavBarLinkGroup";
 import { HomePageStyle } from "../styles";
 import { NavBar } from "../components/NavBar";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { getClients } from "../state/thunks";
+import { Paths } from "../routes";
 
 const mockdata = [
   //   { label: "Dashboard", icon: IconGauge },
-  { label: "Clientes", icon: IconUser, path: "/clients" },
-  { label: "Bicicletas", icon: IconBike, path: "/bikes" },
-  { label: "Ordenes de taller", icon: IconTool, path: "/orders" },
-  { label: "Depósito", icon: IconBuildingWarehouse, path: "/storage" },
+  {
+    label: "Clientes",
+    icon: IconUser,
+    path: Paths.CLIENTS,
+  },
+  {
+    label: "Bicicletas",
+    icon: IconBike,
+    path: Paths.BIKES,
+  },
+  {
+    label: "Ordenes de taller",
+    icon: IconTool,
+    path: Paths.ORDERS,
+  },
+  {
+    label: "Depósito",
+    icon: IconBuildingWarehouse,
+    path: Paths.STORAGE,
+  },
 ];
 
 const useStyles = HomePageStyle;

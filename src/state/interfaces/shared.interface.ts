@@ -4,3 +4,9 @@ export interface GetAllResponse<T> {
   perPage: number;
   data: T;
 }
+
+export interface Pagination {
+  page: number;
+  total: number;
+  perPage: number;
+}

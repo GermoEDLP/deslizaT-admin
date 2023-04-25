@@ -4,8 +4,7 @@ import ErrorPage from "../pages/Error";
 import { AuthState } from "../state/interfaces";
 import { LoginPage } from "../pages/LoginPage";
 import { HomePage } from "../pages/HomePage";
-import { ClientesPage, OrdersPage, StoragePage } from "../pages/AdminPages";
-import { BikesPage } from '../pages/AdminPages/BikesPage';
+import { ClientesPage, OrdersPage, StoragePage, ClientPage, BikesPage } from "../pages/AdminPages";
 
 export const createRouter = (auth: AuthState): Router => {
   return createBrowserRouter([
@@ -31,8 +30,12 @@ export const createRouter = (auth: AuthState): Router => {
                   element: <ClientesPage />,
                 },
                 {
+                  path: "/clients/:id",
+                  element: <ClientPage />,
+                },
+                {
                   path: "/orders",
-                  element: <OrdersPage/>,
+                  element: <OrdersPage />,
                 },
                 {
                   path: "/storage",
@@ -40,8 +43,8 @@ export const createRouter = (auth: AuthState): Router => {
                 },
                 {
                   path: "/bikes",
-                  element: <BikesPage/>,
-                }
+                  element: <BikesPage />,
+                },
               ],
             },
             {
