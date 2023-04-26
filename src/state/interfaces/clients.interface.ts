@@ -41,10 +41,12 @@ export interface Client {
   social: Social;
   address: Address;
   contacts: Contact<ContactType>[];
+  bikes: string[];
 }
 
 export interface ClientsState {
   clients: Client[];
+  baseClients: Client[];
   client: Client | null;
   clientInfo: ClientInfo[] | null;
   loading: boolean;

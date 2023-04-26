@@ -1,13 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clientsInitialState } from "../initials";
 import { getClient, getClients } from "../thunks";
 import { IconMail, IconMapPin, IconPhone, IconUser } from "@tabler/icons-react";
-import { ContactType } from "../interfaces";
+import { Client, ContactType } from "../interfaces";
 
 const clientsSlice = createSlice({
   name: "clients",
   initialState: clientsInitialState,
-  reducers: {},
+  reducers: {
+    search: (state, action: PayloadAction<string>) => {
+      state.loading = true;
+      const s = action.payload.toLowerCase();
+      state.clients = state.baseClients.filter((c: Client) => {
+        return (
+          c.name.toLowerCase().includes(s) ||
+          c.lastname.toLowerCase().includes(s) ||
+          c.address.street.toLowerCase().includes(s) ||
+          c.contacts.find((c) => c.value.toLowerCase().includes(s))
+        );
+      });
+      state.loading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getClients.pending, (state) => {
@@ -16,6 +30,7 @@ const clientsSlice = createSlice({
       .addCase(getClients.fulfilled, (state, action) => {
         const { data, page, perPage, total } = action.payload;
         state.clients = data;
+        state.baseClients = data;
         state.pagination = { page, total, perPage };
         state.loading = false;
       })
@@ -64,5 +79,7 @@ const clientsSlice = createSlice({
       });
   },
 });
+
+export const { search } = clientsSlice.actions;
 
 export default clientsSlice.reducer;

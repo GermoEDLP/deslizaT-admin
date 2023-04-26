@@ -4,21 +4,25 @@ import { NavBarStyle } from "../styles";
 
 const useStyles = NavBarStyle;
 
-export const NavBar = ({ links }: { links: JSX.Element[] }) => {
+export const NavBar = ({
+  links,
+  opened,
+}: {
+  links: JSX.Element[];
+  opened: boolean;
+}) => {
   const { classes } = useStyles();
   return (
-    <Navbar p="md" className={classes.navbar}>
-      <Navbar.Section className={classes.header}>
-        <Group position="apart">
-          <h4 style={{ margin: "2px 0" }}>DeslizaT</h4>
-          <Code sx={{ fontWeight: 700 }}>v0.1.0</Code>
-        </Group>
-      </Navbar.Section>
-
+    <Navbar
+      p="md"
+      className={classes.navbar}
+      hiddenBreakpoint="sm"
+      hidden={!opened}
+      width={{ sm: 200, lg: 300 }}
+    >
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
         <div className={classes.linksInner}>{links}</div>
       </Navbar.Section>
-
       <Navbar.Section className={classes.footer}>
         <a
           href="#"
