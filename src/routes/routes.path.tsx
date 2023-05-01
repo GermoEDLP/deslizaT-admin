@@ -4,9 +4,18 @@ import ErrorPage from "../pages/Error";
 import { AuthState } from "../state/interfaces";
 import { LoginPage } from "../pages/LoginPage";
 import { HomePage } from "../pages/HomePage";
-import { ClientesPage, OrdersPage, StoragePage, ClientPage, BikesPage } from "../pages/AdminPages";
+import {
+  ClientesPage,
+  OrdersPage,
+  StoragePage,
+  ClientPage,
+  BikesPage,
+} from "../pages/AdminPages";
+import { useAppDispatch } from "../state/hooks";
+import { getClients } from "../state/thunks";
 
 export const createRouter = (auth: AuthState): Router => {
+  const dispatch = useAppDispatch();
   return createBrowserRouter([
     {
       path: "/",
@@ -26,8 +35,13 @@ export const createRouter = (auth: AuthState): Router => {
               element: <HomePage />,
               children: [
                 {
+                  path: "/",
+                  element: <Navigate to="/clients" />,
+                },
+                {
                   path: "/clients",
                   element: <ClientesPage />,
+                  
                 },
                 {
                   path: "/clients/:id",
