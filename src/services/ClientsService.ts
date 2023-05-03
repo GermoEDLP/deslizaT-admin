@@ -25,4 +25,17 @@ export class ClientsService {
     const data = await response.json();
     return data;
   }
+
+  async createCient(client: Client): Promise<Client> {
+    const url = `${this.server_url}`;
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(client),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  }
 }

@@ -12,89 +12,110 @@ import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { close } from "../../../state/slices";
 import { ModalType, SET_DATA_TYPE } from "../../../state/interfaces";
 import { useForm } from "@mantine/form";
-export interface FormValue {
-  email: string;
-  name: string;
-  lastName: string;
-  street: string;
-  number: string;
-  city: string;
-  floor: string;
-  apartment: string;
+export enum FormValue {
+  email = "email",
+  name = "name",
+  lastName = "lastName",
+  street = "street",
+  number = "number",
+  city = "city",
+  floor = "floor",
+  apartment = "apartment",
+  instagram = "instagram",
+  facebook = "facebook",
+  twitter = "twitter",
 }
 
-export type FormValuesConfig = Record<
-  keyof FormValue,
-  {
-    required?: boolean;
-    placeholder?: string;
-    label?: string;
-    name?: string;
-    span?: number;
-  }
->;
+export interface FormValuesConfig {
+  required?: boolean;
+  placeholder?: string;
+  label?: string;
+  name?: FormValue;
+  span?: number;
+}
 
-export const formValuesConfig: FormValuesConfig = {
-  email: {
-    required: true,
-    placeholder: "Email",
-    label: "Email",
-    name: "email",
-    span: 12,
-  },
-  name: {
+export const formValuesConfig: FormValuesConfig[] = [
+  {
     required: true,
     placeholder: "Nombre",
     label: "Nombre",
-    name: "name",
+    name: FormValue.name,
     span: 6,
   },
-  lastName: {
+  {
     required: true,
     placeholder: "Apellido",
     label: "Apellido",
-    name: "lastName",
+    name: FormValue.lastName,
     span: 6,
   },
-  street: {
+  {
+    required: true,
+    placeholder: "Email",
+    label: "Email",
+    name: FormValue.email,
+    span: 12,
+  },
+  {
     required: true,
     placeholder: "Calle",
     label: "Calle",
-    name: "street",
+    name: FormValue.street,
     span: 8,
   },
-  number: {
+  {
     required: true,
     placeholder: "Numero",
     label: "Numero",
-    name: "number",
+    name: FormValue.number,
     span: 4,
   },
-  city: {
+  {
     required: false,
     placeholder: "Ciudad",
     label: "Ciudad",
-    name: "city",
+    name: FormValue.city,
     span: 4,
   },
-  floor: {
+  {
     required: false,
     placeholder: "Piso",
     label: "Piso",
-    name: "floor",
+    name: FormValue.floor,
     span: 4,
   },
-  apartment: {
+  {
     required: false,
     placeholder: "Departamento",
     label: "Departamento",
-    name: "apartment",
+    name: FormValue.apartment,
     span: 4,
   },
-};
+  {
+    required: false,
+    placeholder: "juanperez",
+    label: "Instagram",
+    name: FormValue.instagram,
+    span: 4,
+  },
+  {
+    required: false,
+    placeholder: "juan.perez",
+    label: "Facebook",
+    name: FormValue.facebook,
+    span: 4,
+  },
+  {
+    required: false,
+    placeholder: "juan_perez",
+    label: "Twitter",
+    name: FormValue.twitter,
+    span: 4,
+  },
+];
 
 export const ClientModal = () => {
-  const values: FormValue = {
+  const values: Record<FormValue, string> = {
     email: "",
     name: "",
     lastName: "",
@@ -103,6 +124,9 @@ export const ClientModal = () => {
     city: "",
     floor: "",
     apartment: "",
+    instagram: "",
+    facebook: "",
+    twitter: "",
   };
   const dispacth = useAppDispatch();
   const { CLIENT: modal } = useAppSelector((state) => state.modal);
@@ -114,7 +138,7 @@ export const ClientModal = () => {
     },
   });
 
-  const handleSubmit = (values: FormValue) => {
+  const handleSubmit = (values: Record<FormValue, string>) => {
     console.log(values);
   };
 
@@ -130,74 +154,31 @@ export const ClientModal = () => {
       <Box maw={"90%"} mx="auto">
         <form onSubmit={form.onSubmit((value) => handleSubmit(value))}>
           <Grid>
-            <Grid.Col span={6}>
-              <TextInput
-                withAsterisk
-                label="Nombre"
-                placeholder="Juan"
-                {...form.getInputProps("name")}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput
-                withAsterisk
-                label="Apellido"
-                placeholder="Perez"
-                {...form.getInputProps("lastname")}
-              />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <TextInput
-                withAsterisk
-                label="Email"
-                placeholder="your@email.com"
-                {...form.getInputProps("email")}
-              />
-            </Grid.Col>
-            <Grid.Col span={8}>
-              <TextInput
-                withAsterisk
-                label="Calle"
-                placeholder="Av. Siempre Viva"
-                {...form.getInputProps("street")}
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <TextInput
-                withAsterisk
-                label="Numero"
-                placeholder="123"
-                {...form.getInputProps("number")}
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <TextInput
-                withAsterisk
-                label="Ciudad"
-                placeholder="CABA"
-                {...form.getInputProps("city")}
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <TextInput
-                withAsterisk
-                label="Piso"
-                placeholder="1"
-                {...form.getInputProps("floor")}
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <TextInput
-                withAsterisk
-                label="Departamento"
-                placeholder="A"
-                {...form.getInputProps("apartment")}
-              />
-            </Grid.Col>
+            {formValuesConfig.map(
+              ({
+                span,
+                label,
+                placeholder,
+                name,
+                required,
+              }: FormValuesConfig) => {
+                const inputProps = form.getInputProps(name as any);
+                return (
+                  <Grid.Col span={span}>
+                    <TextInput
+                      withAsterisk={required}
+                      label={label}
+                      placeholder={placeholder}
+                      {...inputProps}
+                    />
+                  </Grid.Col>
+                );
+              }
+            )}
           </Grid>
 
           <Group position="right" mt="md">
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Crear</Button>
           </Group>
         </form>
       </Box>

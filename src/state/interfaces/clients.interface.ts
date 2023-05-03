@@ -42,6 +42,8 @@ export interface Client {
   address: Address;
   contacts: Contact<ContactType>[];
   bikes: string[];
+  emails?: string[];
+  phones?: string[];
 }
 
 export interface ClientsState {
