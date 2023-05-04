@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clientsInitialState } from "../initials";
-import { getClient, getClients } from "../thunks";
+import { createClient, getClient, getClients } from "../thunks";
 import { IconMail, IconMapPin, IconPhone, IconUser } from "@tabler/icons-react";
 import { Client, ContactType } from "../interfaces";
 
@@ -74,6 +74,17 @@ const clientsSlice = createSlice({
         state.loading = false;
       })
       .addCase(getClient.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
+      })
+      .addCase(createClient.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createClient.fulfilled, (state, action) => {
+        state.clients.push(action.payload);
+        state.loading = false;
+      })
+      .addCase(createClient.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
       });

@@ -46,6 +46,21 @@ export interface Client {
   phones?: string[];
 }
 
+export interface CreateClientPayload {
+  email: string;
+  phone: string;
+  name: string;
+  lastName: string;
+  street: string;
+  number: string;
+  city: string;
+  floor: string;
+  apartment: string;
+  instagram: string;
+  facebook: string;
+  twitter: string;
+}
+
 export interface ClientsState {
   clients: Client[];
   baseClients: Client[];

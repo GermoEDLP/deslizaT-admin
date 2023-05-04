@@ -12,8 +12,10 @@ import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { close } from "../../../state/slices";
 import { ModalType, SET_DATA_TYPE } from "../../../state/interfaces";
 import { useForm } from "@mantine/form";
+import { createClient } from "../../../state/thunks";
 export enum FormValue {
   email = "email",
+  phone = "phone",
   name = "name",
   lastName = "lastName",
   street = "street",
@@ -54,7 +56,14 @@ export const formValuesConfig: FormValuesConfig[] = [
     placeholder: "Email",
     label: "Email",
     name: FormValue.email,
-    span: 12,
+    span: 6,
+  },
+  {
+    required: true,
+    placeholder: "123456789",
+    label: "Telefono",
+    name: FormValue.phone,
+    span: 6,
   },
   {
     required: true,
@@ -127,9 +136,13 @@ export const ClientModal = () => {
     instagram: "",
     facebook: "",
     twitter: "",
+    phone: "",
   };
   const dispacth = useAppDispatch();
-  const { CLIENT: modal } = useAppSelector((state) => state.modal);
+  const {
+    modal: { CLIENT: modal },
+    clients: { loading },
+  } = useAppSelector((state) => state);
   const form = useForm({
     initialValues: values,
 
@@ -139,7 +152,10 @@ export const ClientModal = () => {
   });
 
   const handleSubmit = (values: Record<FormValue, string>) => {
-    console.log(values);
+    dispacth(createClient(values)).then(() => {
+      form.reset();
+      dispacth(close(ModalType.CLIENT));
+    });
   };
 
   return (
@@ -178,7 +194,9 @@ export const ClientModal = () => {
           </Grid>
 
           <Group position="right" mt="md">
-            <Button type="submit">Crear</Button>
+            <Button type="submit" loading={loading}>
+              Crear
+            </Button>
           </Group>
         </form>
       </Box>

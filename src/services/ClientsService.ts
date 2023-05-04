@@ -1,6 +1,7 @@
 import {
   AuthLoginResponse,
   Client,
+  CreateClientPayload,
   GetAllClientsResponse,
 } from "../state/interfaces";
 
@@ -26,11 +27,39 @@ export class ClientsService {
     return data;
   }
 
-  async createCient(client: Client): Promise<Client> {
+  /**
+   * _id?: string;
+  name: string;
+  lastname: string;
+  social: Social;
+  address: Address;
+  contacts: Contact<ContactType>[];
+  bikes: string[];
+   */
+
+  async createCient(client: CreateClientPayload): Promise<Client> {
+    const body = {
+      name: client.name,
+      lastname: client.lastName,
+      social: {
+        twitter: client.twitter,
+        facebook: client.facebook,
+        instagram: client.instagram,
+      },
+      address: {
+        street: client.street,
+        number: client.number,
+        city: client.city,
+        floor: client.floor,
+        apartment: client.apartment,
+      },
+      emails: [client.email],
+      phones: [client.phone],
+    };
     const url = `${this.server_url}`;
     const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(client),
+      body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
       },
