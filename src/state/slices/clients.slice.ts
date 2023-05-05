@@ -28,10 +28,8 @@ const clientsSlice = createSlice({
         state.loading = true;
       })
       .addCase(getClients.fulfilled, (state, action) => {
-        const { data, page, perPage, total } = action.payload;
-        state.clients = data;
-        state.baseClients = data;
-        state.pagination = { page, total, perPage };
+        state.clients = action.payload;
+        state.baseClients = action.payload;
         state.loading = false;
       })
       .addCase(getClients.rejected, (state, action) => {
