@@ -24,9 +24,7 @@ export const ClientesPage = () => {
   };
 
   useEffect(() => {
-    if (term.length > 2) {
-      dispatch(search(term));
-    }
+    dispatch(search(term));
   }, [term]);
   return (
     <>

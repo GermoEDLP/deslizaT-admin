@@ -1,0 +1,9 @@
+.mantine-Menu-itemLabel {
+  display: flex;
+  align-items: center;
+}
+
+#bikes-table-actions.tabler-icon{
+    height: 1.5rem;
+    color: #868686;
+}

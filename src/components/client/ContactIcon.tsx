@@ -36,7 +36,7 @@ export const ContactIcon = ({
   return (
     <div className={cx(classes.wrapper, className)} {...others}>
       <ThemeIcon size={40} radius="md" className={classes.icon}>
-        <Icon size="1.5rem" />
+        <Icon size="1.5rem"/>
       </ThemeIcon>
 
       <div>

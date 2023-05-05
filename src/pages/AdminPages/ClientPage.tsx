@@ -1,5 +1,13 @@
-import { Box, Button, Grid, Loader, SimpleGrid, Stack } from "@mantine/core";
-import { ContactIcon } from "../../components/clients/ContactIcon";
+import {
+  Box,
+  Button,
+  Grid,
+  Loader,
+  SimpleGrid,
+  Stack,
+  Title,
+} from "@mantine/core";
+import { ContactIcon } from "../../components/client/ContactIcon";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
@@ -8,6 +16,7 @@ import { ClientInfo } from "../../state/interfaces";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { Group } from "@mantine/core";
 import { Paths } from "../../routes";
+import { TableBikes } from "../../components/client/TableBikes";
 
 export interface ContactIconProps
   extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
@@ -16,21 +25,19 @@ export interface ContactIconProps
   description: React.ReactNode;
 }
 
-interface ContactIconsListProps {
-  data?: ContactIconProps[];
-}
-
-export function ContactIconsList({ data }: { data: ClientInfo[] }) {
+export function ContactIconsList({ data }: { data: ClientInfo }) {
   if (!data) return null;
-  const items = data.map((item, index) => (
-    <ContactIcon
-      key={index}
-      title={item.title}
-      description={item.desc}
-      icon={item.icon}
-    />
-  ));
-  return <Stack>{items}</Stack>;
+  return (
+    <Grid.Col md={6} sm={12}>
+      <Stack>
+        <ContactIcon
+          title={data.title}
+          description={data.desc}
+          icon={data.icon}
+        />
+      </Stack>
+    </Grid.Col>
+  );
 }
 
 export const ClientPage = () => {
@@ -73,14 +80,15 @@ export const ClientPage = () => {
         >
           {clientInfo && (
             <Grid>
-              <Grid.Col span={6}>
-                <ContactIconsList data={clientInfo.slice(0, 2)} />
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <ContactIconsList data={clientInfo.slice(2, 4)} />
-              </Grid.Col>
+              {clientInfo.map((item) => (
+                <ContactIconsList data={item} />
+              ))}
             </Grid>
           )}
+        </Box>
+        <Box>
+          <Title order={4}>Bicicletas</Title>
+          <TableBikes bikes={client?.bikes || []} />
         </Box>
       </SimpleGrid>
     </>

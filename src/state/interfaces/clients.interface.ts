@@ -1,5 +1,5 @@
 import { TablerIconsProps } from "@tabler/icons-react";
-import { GetAllResponse, Pagination } from "./shared.interface";
+import { GetAllResponse, Bike } from ".";
 
 export type GetAllClientsResponse = GetAllResponse<Client[]>;
 
@@ -41,7 +41,7 @@ export interface Client {
   social: Social;
   address: Address;
   contacts: Contact<ContactType>[];
-  bikes: string[];
+  bikes: Bike[];
   emails?: string[];
   phones?: string[];
 }
@@ -68,7 +68,6 @@ export interface ClientsState {
   clientInfo: ClientInfo[] | null;
   loading: boolean;
   error: string | null;
-  pagination: Pagination;
 }
 
 export interface ClientInfo {

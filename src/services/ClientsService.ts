@@ -9,7 +9,7 @@ const url = process.env.SERVER_URL?.toString() || "";
 export class ClientsService {
   private server_url = `${url}/user`;
 
-  async getClients(): Promise<GetAllClientsResponse> {
+  async getClients(): Promise<Client[]> {
     const url = `${this.server_url}`;
     const response = await fetch(url, {
       method: "GET",
@@ -26,16 +26,6 @@ export class ClientsService {
     const data = await response.json();
     return data;
   }
-
-  /**
-   * _id?: string;
-  name: string;
-  lastname: string;
-  social: Social;
-  address: Address;
-  contacts: Contact<ContactType>[];
-  bikes: string[];
-   */
 
   async createCient(client: CreateClientPayload): Promise<Client> {
     const body = {
