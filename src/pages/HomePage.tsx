@@ -90,7 +90,6 @@ export function HomePage() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                width: "100%",
               }}
             >
               <h4 onClick={() => navigate("/")} style={{ cursor: "pointer" }}>

@@ -95,8 +95,8 @@ export const formValuesConfig: FormValuesConfig[] = [
   },
   {
     required: false,
-    placeholder: "Departamento",
-    label: "Departamento",
+    placeholder: "Depto.",
+    label: "Depto.",
     name: FormValue.apartment,
     span: 4,
   },
