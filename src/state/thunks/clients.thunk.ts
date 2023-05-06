@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthLoginPayload, CreateClientPayload } from "../interfaces";
-import { ClientsService } from "../../services/ClientsService";
+import { AuthLoginPayload, Client, CreateClientPayload } from "../interfaces";
+import { ClientsService } from "../../services/clients.service";
 
 const clientsSvc = new ClientsService();
 
@@ -21,6 +21,22 @@ export const createClient = createAsyncThunk(
   "clients/createClient",
   async (payload: CreateClientPayload) => {
     const response = await clientsSvc.createCient(payload);
+    return response;
+  }
+);
+
+export const updateClient = createAsyncThunk(
+  "clients/updateClient",
+  async (payload: Partial<Client>) => {
+    const response = await clientsSvc.updateClient(payload);
+    return response;
+  }
+);
+
+export const deleteClient = createAsyncThunk(
+  "clients/deleteClient",
+  async (id: string) => {
+    const response = await clientsSvc.deleteClient(id);
     return response;
   }
 );

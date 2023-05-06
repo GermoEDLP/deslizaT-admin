@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Define a type for the slice state
 export enum ModalType {
-    CLIENT = "CLIENT",
+  CLIENT = "CLIENT",
+  CONFIRM_DELETE_CLIENT = "CONFIRM_DELETE_CLIENT",
+  BIKE = "BIKE",
 }
 
 export enum SET_DATA_TYPE {
-    NEW = "NEW",
+  NEW = "NEW",
+  EDIT = "EDIT",
 }
 
 export type ModalTypeByEnum = keyof typeof ModalType;
@@ -18,8 +21,7 @@ export interface ModalInternalState {
 }
 
 export const initialModalStateGenerator = () => {
-  const state: { [key in ModalTypeByEnum]?: Partial<ModalInternalState> } =
-    {};
+  const state: { [key in ModalTypeByEnum]?: Partial<ModalInternalState> } = {};
 
   Object.keys(ModalType).forEach((key) => {
     state[key as ModalType] = {
@@ -29,4 +31,3 @@ export const initialModalStateGenerator = () => {
 
   return state as ModalState;
 };
-

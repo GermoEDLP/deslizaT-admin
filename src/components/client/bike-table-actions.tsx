@@ -2,12 +2,11 @@ import { Menu, Button, Text } from "@mantine/core";
 import {
   IconDotsVertical,
   IconEdit,
-  IconExternalLink,
   IconTool,
   IconTrash,
 } from "@tabler/icons-react";
 
-export const Actions = () => {
+export const BikeTableActions = () => {
   return (
     <Menu width={200} shadow="md">
       <Menu.Target>

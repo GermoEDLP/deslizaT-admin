@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clientsInitialState } from "../initials";
-import { createClient, getClient, getClients } from "../thunks";
+import {
+  createClient,
+  deleteClient,
+  getClient,
+  getClients,
+  updateClient,
+} from "../thunks";
 import { IconMail, IconMapPin, IconPhone, IconUser } from "@tabler/icons-react";
-import { Client, ContactType } from "../interfaces";
+import { Client } from "../interfaces";
 
 const clientsSlice = createSlice({
   name: "clients",
@@ -15,8 +21,9 @@ const clientsSlice = createSlice({
         return (
           c.name.toLowerCase().includes(s) ||
           c.lastname.toLowerCase().includes(s) ||
-          c.address.street.toLowerCase().includes(s) ||
-          c.contacts.find((c) => c.value.toLowerCase().includes(s))
+          c.address?.street.toLowerCase().includes(s) ||
+          c.email.toLowerCase().includes(s) ||
+          c.phone?.toLowerCase().includes(s)
         );
       });
       state.loading = false;
@@ -41,34 +48,7 @@ const clientsSlice = createSlice({
       })
       .addCase(getClient.fulfilled, (state, action) => {
         state.client = action.payload;
-        state.clientInfo = [
-          {
-            title: "Nombre y Apellido",
-            desc: `${action.payload.name} ${action.payload.lastname}`,
-            icon: IconUser,
-          },
-          {
-            title: "Dirección",
-            desc: `${action.payload.address.street} ${
-              action.payload.address.number
-            }, ${action.payload.address.city || ""}`,
-            icon: IconMapPin,
-          },
-          {
-            title: "Teléfono",
-            desc:
-              action.payload.contacts.find((c) => c.type === ContactType.PHONE)
-                ?.value || "",
-            icon: IconPhone,
-          },
-          {
-            title: "Email",
-            desc:
-              action.payload.contacts.find((c) => c.type === ContactType.EMAIL)
-                ?.value || "",
-            icon: IconMail,
-          },
-        ];
+        state.clientInfo = setClientInfo(action.payload);
         state.loading = false;
       })
       .addCase(getClient.rejected, (state, action) => {
@@ -85,9 +65,62 @@ const clientsSlice = createSlice({
       .addCase(createClient.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
+      })
+      .addCase(updateClient.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateClient.fulfilled, (state, action) => {
+        state.client = action.payload;
+        state.clientInfo = setClientInfo(action.payload);
+        state.loading = false;
+      })
+      .addCase(updateClient.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
+      })
+      .addCase(deleteClient.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteClient.fulfilled, (state, action) => {
+        state.client = null;
+        state.clientInfo = null;
+        state.loading = false;
+      })
+      .addCase(deleteClient.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
       });
   },
 });
+
+export const setClientInfo = (client: Client) => {
+  const { address, lastname, name, phone, email } = client;
+  const { street, number, city, apartment, floor } = address || {};
+  return [
+    {
+      title: "Nombre y Apellido",
+      desc: `${name} ${lastname}`,
+      icon: IconUser,
+    },
+    {
+      title: "Dirección",
+      desc: `${street || ""} ${number ? `#${number}` : ""}, ${city || ""} ${
+        floor ? `Piso ${floor}` : ""
+      } ${apartment ? `Dpto. ${apartment}` : ""} `,
+      icon: IconMapPin,
+    },
+    {
+      title: "Teléfono", 
+      desc: phone || "",
+      icon: IconPhone,
+    },
+    {
+      title: "Email",
+      desc: email || "",
+      icon: IconMail,
+    },
+  ];
+};
 
 export const { search } = clientsSlice.actions;
 

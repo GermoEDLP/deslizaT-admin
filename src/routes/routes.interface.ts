@@ -14,10 +14,3 @@ export interface Page {
   component: ReactNode;
   isPublic: boolean;
 }
-
-export enum Paths {
-  CLIENTS = "/clients",
-  BIKES = "/bikes",
-  ORDERS = "/orders",
-  STORAGE = "/storage",
-}

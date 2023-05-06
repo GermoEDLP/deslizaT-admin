@@ -13,8 +13,8 @@ export interface Address {
   street: string;
   number: string;
   city: string;
-  floor: number;
-  apartment: number;
+  floor: string;
+  apartment: string;
 }
 
 export class Contact<T> {
@@ -28,29 +28,22 @@ export class Contact<T> {
     this.code = code;
   }
 }
-
-export enum ContactType {
-  PHONE = "PHONE",
-  EMAIL = "EMAIL",
-}
-
 export interface Client {
   _id?: string;
   name: string;
   lastname: string;
   social: Social;
-  address: Address;
-  contacts: Contact<ContactType>[];
+  address?: Address;
   bikes: Bike[];
-  emails?: string[];
-  phones?: string[];
+  email: string;
+  phone?: string;
 }
 
 export interface CreateClientPayload {
   email: string;
   phone: string;
   name: string;
-  lastName: string;
+  lastname: string;
   street: string;
   number: string;
   city: string;
@@ -74,4 +67,11 @@ export interface ClientInfo {
   title: string;
   desc: string;
   icon: (props: TablerIconsProps) => JSX.Element;
+}
+
+export interface ContactIconProps
+  extends Omit<React.ComponentPropsWithoutRef<"div">, "title"> {
+  icon: React.FC<any>;
+  title: React.ReactNode;
+  description: React.ReactNode;
 }

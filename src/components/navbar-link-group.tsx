@@ -11,25 +11,9 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { NavBarILinkGroupStyle } from "../styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../state/hooks";
-import { getClients } from "../state/thunks";
-import { Paths } from "../routes";
+import { Actions, CSS, LinksGroupProps } from "../state/interfaces";
 
 const useStyles = NavBarILinkGroupStyle;
-
-interface LinksGroupProps {
-  icon: React.FC<any>;
-  label: string;
-  path: Paths;
-  initiallyOpened?: boolean;
-  links?: { label: string; link: string; path: string }[];
-}
-
-export const Actions: Record<Paths, any> = {
-  [Paths.CLIENTS]: getClients,
-  [Paths.BIKES]: () => {},
-  [Paths.ORDERS]: () => {},
-  [Paths.STORAGE]: () => {},
-};
 
 export function LinksGroup({
   icon: Icon,
@@ -70,7 +54,7 @@ export function LinksGroup({
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: CSS.flex, alignItems: CSS.center }}>
             <ThemeIcon variant="light" size={30}>
               <Icon size="1.1rem" />
             </ThemeIcon>
@@ -84,7 +68,7 @@ export function LinksGroup({
               style={{
                 transform: opened
                   ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
-                  : "none",
+                  : CSS.none,
               }}
             />
           )}

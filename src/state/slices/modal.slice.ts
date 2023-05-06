@@ -43,8 +43,6 @@ export const modalSlice = createSlice({
         data,
         type,
       };
-      console.log("setData", d);
-
       state[modal] = d;
     },
   },

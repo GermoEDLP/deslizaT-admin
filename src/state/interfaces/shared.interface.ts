@@ -1,3 +1,6 @@
+import { Paths } from "../../components/home/items";
+import { getBikes, getClients } from "../thunks";
+
 export interface GetAllResponse<T> {
   page: number;
   total: number;
@@ -12,6 +15,7 @@ export interface Pagination {
 }
 
 export enum CSS {
+  pointer = "pointer",
   center = "center",
   flex = "flex",
   flexEnd = "flex-end",
@@ -38,3 +42,18 @@ export enum CSS {
   unset = "unset",
   hidden = "hidden",
 }
+
+export interface LinksGroupProps {
+  icon: React.FC<any>;
+  label: string;
+  path: Paths;
+  initiallyOpened?: boolean;
+  links?: { label: string; link: string; path: string }[];
+}
+
+export const Actions: Record<Paths, any> = {
+  [Paths.CLIENTS]: getClients,
+  [Paths.BIKES]: getBikes,
+  [Paths.ORDERS]: () => {},
+  [Paths.STORAGE]: () => {},
+};

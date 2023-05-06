@@ -1,7 +1,6 @@
 import { Table, ScrollArea } from "@mantine/core";
-import { ContactType } from "../../state/interfaces";
 import { useAppSelector } from "../../state/hooks";
-import { ClientsTableActions } from "./ClientsTableActions";
+import { ClientsTableActions } from "./clients-table-actions";
 
 export function ClientsTable() {
   const { clients } = useAppSelector((state) => state.clients);
@@ -9,11 +8,13 @@ export function ClientsTable() {
   const rows = clients.map((c, i) => {
     return (
       <tr key={i}>
-        <td>{c.lastname}, {c.name}</td>
-        <td>{c.contacts.find((c) => c.type === ContactType.EMAIL)?.value}</td>
-        <td>{c.contacts.find((c) => c.type === ContactType.PHONE)?.value}</td>
         <td>
-          <ClientsTableActions c={c}/>
+          {c.lastname}, {c.name}
+        </td>
+        <td>{c.email}</td>
+        <td>{c.phone}</td>
+        <td>
+          <ClientsTableActions c={c} />
         </td>
       </tr>
     );

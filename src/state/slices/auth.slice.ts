@@ -6,7 +6,12 @@ import { authLogin } from "../thunks";
 const authSlice = createSlice({
   name: "auth",
   initialState: authInitialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.token = null;
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(authLogin.pending, (state) => {
@@ -23,6 +28,7 @@ const authSlice = createSlice({
           email,
           roles,
         };
+        state.error = null;
         state.loading = false;
       })
       .addCase(authLogin.rejected, (state, action) => {
@@ -31,5 +37,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

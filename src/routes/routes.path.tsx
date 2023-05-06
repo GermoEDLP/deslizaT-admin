@@ -1,9 +1,9 @@
 import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import type { Router } from "@remix-run/router";
-import ErrorPage from "../pages/Error";
+import ErrorPage from "../pages/error.page";
 import { AuthState } from "../state/interfaces";
-import { LoginPage } from "../pages/LoginPage";
-import { HomePage } from "../pages/HomePage";
+import { LoginPage } from "../pages/login.page";
+import { HomePage } from "../pages/home.page";
 import {
   ClientesPage,
   OrdersPage,
@@ -12,7 +12,7 @@ import {
   BikesPage,
 } from "../pages/AdminPages";
 import { useAppDispatch } from "../state/hooks";
-import { getClients } from "../state/thunks";
+import { BikePage } from "../pages/AdminPages/bike.page";
 
 export const createRouter = (auth: AuthState): Router => {
   const dispatch = useAppDispatch();
@@ -41,11 +41,14 @@ export const createRouter = (auth: AuthState): Router => {
                 {
                   path: "/clients",
                   element: <ClientesPage />,
-                  
                 },
                 {
                   path: "/clients/:id",
                   element: <ClientPage />,
+                },
+                {
+                  path: "/bike/:id",
+                  element: <BikePage />,
                 },
                 {
                   path: "/orders",

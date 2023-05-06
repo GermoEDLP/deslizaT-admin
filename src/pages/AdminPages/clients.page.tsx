@@ -1,16 +1,14 @@
 import { Button, Divider, Group, Input, Title } from "@mantine/core";
-import { ClientsCards } from "../../components/clients/ClientsCards";
-import { ClientsTable } from "../../components/clients/ClientsTable";
+import { ClientsCards } from "../../components/clients/clients-card";
 import { CSS, ModalType, SET_DATA_TYPE } from "../../state/interfaces";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../state/hooks";
+import { useAppDispatch } from "../../state/hooks";
 import { open, search, setData } from "../../state/slices";
-import { ClientModal } from "./modals/ClientModal";
+import { ClientModal } from "./modals/client.modal";
 
 export const ClientesPage = () => {
   const [term, setTerm] = useState("");
-  const {} = useAppSelector((state) => state.clients);
   const dispatch = useAppDispatch();
   const handleChange = (e: any) => {
     setTerm(e.target.value);

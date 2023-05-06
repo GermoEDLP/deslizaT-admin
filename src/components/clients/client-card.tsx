@@ -8,7 +8,7 @@ import {
   Text,
 } from "@mantine/core";
 import { IconBike, IconMail, IconPhone } from "@tabler/icons-react";
-import { Client, ContactType } from "../../state/interfaces";
+import { Client } from "../../state/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useHover } from "@mantine/hooks";
 
@@ -32,19 +32,15 @@ export const ClientCard = ({ c }: { c: Client }) => {
         <Divider my={5} />
         <Group>
           <IconMail />
-          <Text>
-            {c.contacts.find((c) => c.type === ContactType.EMAIL)?.value}
-          </Text>
+          <Text>{c.email}</Text>
         </Group>
         <Group>
           <IconPhone />
-          <Text>
-            {c.contacts.find((c) => c.type === ContactType.PHONE)?.value}
-          </Text>
+          <Text>{c.phone}</Text>
         </Group>
         <Indicator
           inline
-          label={c.bikes.length}
+          label={(c.bikes || []).length}
           size={16}
           mt={15}
           offset={-1.5}

@@ -10,17 +10,26 @@ import {
   Button,
   Divider,
   Stack,
+  Alert,
 } from "@mantine/core";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { authLogin } from "../state/thunks";
+import { CSS } from "../state/interfaces";
+import { IconAlertCircle } from "@tabler/icons-react";
 
 export function LoginPage(props: PaperProps) {
   const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state) => state.auth);
+  const { loading, error } = useAppSelector((state) => state.auth);
   const form = useForm({
     initialValues: {
       username: "gbrassini",
       password: "123456",
+    },
+    validate: {
+      username: (value) =>
+        value.length === 0 ? "El Usuario es obligatorio" : null,
+      password: (value) =>
+        value.length === 0 ? "La contraseña es obligatoria" : null,
     },
   });
 
@@ -46,36 +55,38 @@ export function LoginPage(props: PaperProps) {
 
       <form
         onSubmit={form.onSubmit(() => {
+          form.errors;
           dispatch(authLogin(form.values));
         })}
       >
         <Stack>
           <TextInput
-            required
             label="Usuario"
             placeholder="hperez"
-            value={form.values.username}
-            onChange={(event) =>
-              form.setFieldValue("user", event.currentTarget.value)
-            }
-            error={form.errors.user && "Usuario invalido"}
+            {...form.getInputProps("username")}
             radius="md"
           />
 
           <PasswordInput
-            required
             label="Contraseña"
             placeholder="Tu contraseña"
-            value={form.values.password}
-            onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
-            }
-            error={form.errors.password && "Contrseña inválida"}
+            {...form.getInputProps("password")}
             radius="md"
           />
         </Stack>
 
-        <Group position="apart" mt="xl" display={"flex"}>
+        {error && (
+          <Alert
+            icon={<IconAlertCircle size="1rem" />}
+            title="Usuario y/o contraseña incorrecta"
+            color="red"
+            my={15}
+          >
+            Intenta volver a colocar los datos e intentatalo nuevamente.
+          </Alert>
+        )}
+
+        <Group position="apart" mt="xl" display={CSS.flex}>
           <Button type="submit" radius="xl" loading={loading}>
             Entrar
           </Button>

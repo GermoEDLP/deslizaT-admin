@@ -1,6 +1,6 @@
 import { Table } from "@mantine/core";
 import { BIKE_SIZE, Bike } from "../../state/interfaces";
-import { Actions } from "./Actions";
+import { BikeTableActions } from "./bike-table-actions";
 
 export const TableBikes = ({ bikes }: { bikes: Bike[] }) => {
   const rows = bikes.map((bike: Bike) => (
@@ -12,7 +12,7 @@ export const TableBikes = ({ bikes }: { bikes: Bike[] }) => {
       <td>{bike.size.webName}</td>
       <td>{bike.description}</td>
       <td>
-        <Actions />
+        <BikeTableActions />
       </td>
     </tr>
   ));

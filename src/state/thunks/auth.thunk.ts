@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthService } from "../../services/AuthService";
+import { AuthService } from "../../services/auth.service";
 import { AuthLoginPayload } from "../interfaces";
 
 const authSvc = new AuthService();

@@ -1,6 +1,8 @@
 import { Code, Group, Navbar, ScrollArea } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
 import { NavBarStyle } from "../styles";
+import { useAppDispatch } from "../state/hooks";
+import { logout } from "../state/slices";
 
 const useStyles = NavBarStyle;
 
@@ -12,6 +14,10 @@ export const NavBar = ({
   opened: boolean;
 }) => {
   const { classes } = useStyles();
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <Navbar
       p="md"
@@ -24,11 +30,7 @@ export const NavBar = ({
         <div className={classes.linksInner}>{links}</div>
       </Navbar.Section>
       <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+        <a href="#" className={classes.link} onClick={handleLogout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Cerrar sesión</span>
         </a>
