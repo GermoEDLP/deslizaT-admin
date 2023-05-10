@@ -18,18 +18,19 @@ const useStyles = NavBarILinkGroupStyle;
 export function LinksGroup({
   icon: Icon,
   label,
-  initiallyOpened,
   path,
   links,
+  opened,
+  setOpened,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [openedLink, setOpenedLink] = useState(false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
   const items = (hasLinks ? links : []).map((link) => (
-    <Link to={link.path}>
+    <Link to={link.path} key={link.path}>
       <Text<"a">
         component="a"
         className={classes.link}
@@ -46,11 +47,10 @@ export function LinksGroup({
     <>
       <UnstyledButton
         onClick={() => {
-          setOpened((o) => !o);
           navigate(path);
           dispatch(Actions[path]());
+          setOpened(false);
         }}
-        // onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
@@ -66,7 +66,7 @@ export function LinksGroup({
               size="1rem"
               stroke={1.5}
               style={{
-                transform: opened
+                transform: openedLink
                   ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
                   : CSS.none,
               }}
@@ -74,7 +74,7 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+      {hasLinks ? <Collapse in={openedLink}>{items}</Collapse> : null}
     </>
   );
 }

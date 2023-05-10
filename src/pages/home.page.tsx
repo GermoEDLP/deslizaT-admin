@@ -1,28 +1,29 @@
-import {
-  AppShell,
-  Burger,
-  Code,
-  Group,
-  Header,
-  MediaQuery,
-  useMantineTheme,
-} from "@mantine/core";
+import { AppShell, useMantineTheme } from "@mantine/core";
 import { LinksGroup } from "../components/navbar-link-group";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { CSS } from "../state/interfaces";
+import { useEffect, useState } from "react";
 import { SideBarItems } from "../components/home/items";
 import { NavBar } from "../components/navbar";
+import { HeaderComponent as Header } from "../components/home/header";
+import { useAppSelector } from "../state/hooks";
+import { notifications } from "@mantine/notifications";
 
 export function HomePage() {
+  const [opened, setOpened] = useState(false);
+  const { notification } = useAppSelector((state) => state.notifications);
+  useEffect(() => {
+    notification && notifications.show(notification);
+  }, [notification]);
   const links = SideBarItems.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup
+      {...item}
+      key={item.label}
+      opened={opened}
+      setOpened={setOpened}
+    />
   ));
 
-  const navigate = useNavigate();
-
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
   return (
     <AppShell
       styles={{
@@ -36,39 +37,7 @@ export function HomePage() {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={<NavBar opened={opened} links={links} />}
-      header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <div
-            style={{
-              display: CSS.flex,
-              alignItems: CSS.center,
-              height: "100%",
-            }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: CSS.none }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-            <Group
-              style={{
-                display: CSS.flex,
-                justifyContent: CSS.spaceBetween,
-                width: "100vw",
-              }}
-            >
-              <h4 onClick={() => navigate("/")} style={{ cursor: CSS.pointer }}>
-                DeslizaT
-              </h4>
-              <Code sx={{ fontWeight: 700 }}>v0.1.0</Code>
-            </Group>
-          </div>
-        </Header>
-      }
+      header={<Header opened={opened} setOpened={setOpened} />}
     >
       <Outlet />
     </AppShell>

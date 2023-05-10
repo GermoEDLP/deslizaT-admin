@@ -92,7 +92,7 @@ export const ClientModal = () => {
               }: FormValuesConfig) => {
                 const inputProps = form.getInputProps(name as any);
                 return (
-                  <Grid.Col span={span}>
+                  <Grid.Col span={span} key={name}>
                     <TextInput
                       withAsterisk={required}
                       label={label}

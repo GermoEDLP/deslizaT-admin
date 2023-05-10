@@ -4,6 +4,7 @@ export enum ModalType {
   CLIENT = "CLIENT",
   CONFIRM_DELETE_CLIENT = "CONFIRM_DELETE_CLIENT",
   BIKE = "BIKE",
+  ORDER = "ORDER",
 }
 
 export enum SET_DATA_TYPE {

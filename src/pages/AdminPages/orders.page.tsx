@@ -1,7 +1,14 @@
+import { Divider, Title } from "@mantine/core";
+import { TableOrders } from "../../components/orders/orders-table";
+
 export const OrdersPage = () => {
   return (
     <>
-      <h1>Ordenes de taller</h1>
+      <Title order={2} mb={5}>
+        Ordenes de taller
+      </Title>
+      <Divider my={15}/>
+      <TableOrders />
     </>
   );
 };

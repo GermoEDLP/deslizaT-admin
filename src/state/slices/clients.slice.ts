@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clientsInitialState } from "../initials";
 import {
+  createBike,
   createClient,
   deleteClient,
   getClient,
   getClients,
+  updateBike,
   updateClient,
 } from "../thunks";
 import { IconMail, IconMapPin, IconPhone, IconUser } from "@tabler/icons-react";
-import { Client } from "../interfaces";
+import { Bike, Client } from "../interfaces";
 
 const clientsSlice = createSlice({
   name: "clients",
@@ -89,6 +91,27 @@ const clientsSlice = createSlice({
       .addCase(deleteClient.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
+      })
+      // BIKES
+      .addCase(createBike.fulfilled, (state, action) => {
+        if (state.client) {
+          state.client = {
+            ...state.client,
+            bikes: [...(state.client?.bikes || []), action.payload],
+          };
+        }
+        state.loading = false;
+      })
+      .addCase(updateBike.fulfilled, (state, action) => {
+        if (state.client) {
+          state.client = {
+            ...state.client,
+            bikes: (state.client?.bikes || []).map((b: Bike) =>
+              b._id === action.payload._id ? action.payload : b
+            ),
+          };
+        }
+        state.loading = false;
       });
   },
 });
@@ -110,7 +133,7 @@ export const setClientInfo = (client: Client) => {
       icon: IconMapPin,
     },
     {
-      title: "Teléfono", 
+      title: "Teléfono",
       desc: phone || "",
       icon: IconPhone,
     },

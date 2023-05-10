@@ -8,7 +8,7 @@ export const ClientsCards = () => {
   return (
     <Grid>
       {clients.map((c: Client) => (
-        <ClientCard c={c} />
+        <ClientCard c={c} key={c._id} />
       ))}
     </Grid>
   );

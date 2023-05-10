@@ -7,7 +7,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useAppDispatch, useAppSelector } from "../../state/hooks";
-import { open, setData } from "../../state/slices";
+import { open, setData, show, showSuccess } from "../../state/slices";
 import { ModalType, SET_DATA_TYPE } from "../../state/interfaces";
 import { deleteClient } from "../../state/thunks";
 import { ConfirmDeleteClient } from "./dialogs/confirm-delete.dialog";
@@ -41,6 +41,14 @@ export const ClientActions = () => {
           <Menu.Item onClick={edit}>
             <IconEdit />
             <Text ml={10}>Editar</Text>
+          </Menu.Item>
+          <Menu.Item
+            onClick={() => {
+              dispatch(showSuccess("Notificación enviada"));
+            }}
+          >
+            <IconEdit />
+            <Text ml={10}>Notificación</Text>
           </Menu.Item>
           <Menu.Item
             onClick={() => dispatch(open(ModalType.CONFIRM_DELETE_CLIENT))}

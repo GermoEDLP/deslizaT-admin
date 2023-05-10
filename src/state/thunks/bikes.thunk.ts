@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BikesService } from "../../services/bikes.service";
-import { CreateBikePayload } from "../interfaces";
+import { CreateBikePayload, UpdateBikePayload } from "../interfaces";
 
 const bikesSvc = new BikesService();
 
@@ -18,6 +18,14 @@ export const createBike = createAsyncThunk(
   "bikes/createBike",
   async (payload: CreateBikePayload) => {
     const response = await bikesSvc.createBike(payload);
+    return response;
+  }
+);
+
+export const updateBike = createAsyncThunk(
+  "bikes/updateBike",
+  async (payload: UpdateBikePayload) => {
+    const response = await bikesSvc.updateBike(payload);
     return response;
   }
 );

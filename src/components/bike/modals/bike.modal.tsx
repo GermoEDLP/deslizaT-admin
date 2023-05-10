@@ -17,9 +17,9 @@ import { close } from "../../../state/slices";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BIKE_SIZE, BIKE_TYPE } from "./bike-data.modal";
-import { createBike } from "../../../state/thunks";
+import { createBike, updateBike } from "../../../state/thunks";
 
 const formValues: FormBikesValues = {
   brand: "",
@@ -36,8 +36,24 @@ export const BikeModal = () => {
     bikes: { loading },
     clients: { client },
   } = useAppSelector((state) => state);
+  useEffect(() => {
+    if (modal.data) {
+      const { data } = modal;
+      const init = {
+        ...data,
+        size: data.size.value,
+        type: data.type.value,
+      };
+      setInitialValues(init);
+      form.setValues(init);
+    } else {
+      setInitialValues(formValues);
+    }
+  }, [modal]);
+
   const [initialValues, setInitialValues] =
     useState<FormBikesValues>(formValues);
+
   const form = useForm({
     initialValues: initialValues,
     validate: {
@@ -47,7 +63,16 @@ export const BikeModal = () => {
     },
   });
   const handleSubmit = (values: FormBikesValues) => {
-    dispacth(createBike({ ...values, id: client?._id || "" }));
+    if (modal.type === SET_DATA_TYPE.NEW) {
+      dispacth(createBike({ ...values, user: client?._id || "" })).then(() => {
+        dispacth(close(ModalType.BIKE));
+      });
+    }
+    if (modal.type === SET_DATA_TYPE.EDIT) {
+      dispacth(updateBike({ ...values, _id: modal.data?._id })).then(() => {
+        dispacth(close(ModalType.BIKE));
+      });
+    }
   };
   return (
     <Modal

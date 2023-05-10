@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBikes } from "../thunks/bikes.thunk";
+import { createBike, getBikes, updateBike } from "../thunks/bikes.thunk";
 import { initialBikeState } from "../initials";
 
 const bikesSlice = createSlice({
@@ -19,7 +19,27 @@ const bikesSlice = createSlice({
       .addCase(getBikes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
-      });
+      })
+      .addCase(createBike.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createBike.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(createBike.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
+      })
+      .addCase(updateBike.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateBike.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateBike.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
+      })
   },
 });
 

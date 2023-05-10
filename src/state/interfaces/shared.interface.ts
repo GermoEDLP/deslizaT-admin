@@ -1,5 +1,5 @@
 import { Paths } from "../../components/home/items";
-import { getBikes, getClients } from "../thunks";
+import { getBikes, getClients, getOrders } from "../thunks";
 
 export interface GetAllResponse<T> {
   page: number;
@@ -49,11 +49,13 @@ export interface LinksGroupProps {
   path: Paths;
   initiallyOpened?: boolean;
   links?: { label: string; link: string; path: string }[];
+  opened: boolean;
+  setOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Actions: Record<Paths, any> = {
   [Paths.CLIENTS]: getClients,
   [Paths.BIKES]: getBikes,
-  [Paths.ORDERS]: () => {},
+  [Paths.ORDERS]: getOrders,
   [Paths.STORAGE]: () => {},
 };

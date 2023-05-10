@@ -17,7 +17,9 @@ export interface FormBikesValues {
   type: string;
 }
 
-export type CreateBikePayload = FormBikesValues & { id: string };
+export type CreateBikePayload = FormBikesValues & { user: string };
+
+export type UpdateBikePayload = Partial<CreateBikePayload> & { _id: string };
 export interface BikesState {
   bikes: Bike[];
   baseBikes: Bike[];

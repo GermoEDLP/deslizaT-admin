@@ -1,5 +1,10 @@
 import { Group, Menu, UnstyledButton, rem } from "@mantine/core";
-import { IconDotsVertical, IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  IconDotsVertical,
+  IconEye,
+  IconPencil,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import { ClientsTableStyle } from "../../styles";
 import { Client } from "../../state/interfaces";
@@ -23,7 +28,7 @@ export const ClientsTableActions = ({ c }: { c: Client }) => {
       id: 3,
       label: "Eliminar",
       icon: <IconTrash size="0.9rem" color="#ff4d4f" stroke={1.5} />,
-        to: `/clients/delete/${c._id}`,
+      to: `/clients/delete/${c._id}`,
     },
   ];
   const { classes, cx } = ClientsTableStyle();
@@ -51,7 +56,7 @@ export const ClientsTableActions = ({ c }: { c: Client }) => {
         </Menu.Target>
         <Menu.Dropdown>
           {items.map((item) => (
-            <Link to={item.to} style={{ textDecoration: "none" }}>
+            <Link to={item.to} style={{ textDecoration: "none" }} key={item.id}>
               <Menu.Item key={item.id} icon={item.icon}>
                 {item.label}
               </Menu.Item>

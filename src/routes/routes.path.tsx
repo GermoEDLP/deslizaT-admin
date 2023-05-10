@@ -13,6 +13,7 @@ import {
 } from "../pages/AdminPages";
 import { useAppDispatch } from "../state/hooks";
 import { BikePage } from "../pages/AdminPages/bike.page";
+import { OrderPage } from "../pages/AdminPages/order.page";
 
 export const createRouter = (auth: AuthState): Router => {
   const dispatch = useAppDispatch();
@@ -53,6 +54,10 @@ export const createRouter = (auth: AuthState): Router => {
                 {
                   path: "/orders",
                   element: <OrdersPage />,
+                },
+                {
+                  path: "/orders/:id",
+                  element: <OrderPage />,
                 },
                 {
                   path: "/storage",
