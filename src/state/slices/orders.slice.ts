@@ -8,16 +8,17 @@ import {
   updateOrder,
   updateStatusOrder,
 } from "../thunks";
+import { isFulfilledAction, isPendingAction, isRejectedAction } from ".";
+
+const name = "orders";
 
 const ordersSlice = createSlice({
-  name: "orders",
+  name,
   initialState: ordersInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getOrders.fulfilled, (state, action) => {
-        console.log("getOrders.fulfilled", action.payload);
-
         state.orders = action.payload;
         state.baseOrders = action.payload;
       })
@@ -58,26 +59,26 @@ const ordersSlice = createSlice({
         state.orders = newOrders;
         state.baseOrders = newOrders;
       })
-      .addMatcher(isPendingAction, (state) => {
-        state.loading = true;
-      })
-      .addMatcher(isFulfilledAction, (state) => {
-        state.loading = false;
-      })
-      .addMatcher(isRejectedAction, (state, action) => {
-        state.error = action.error.message || "Something went wrong";
-        state.loading = false;
-      });
+      .addMatcher(
+        (action) => isPendingAction(action, name),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        (action) => isFulfilledAction(action, name),
+        (state) => {
+          state.loading = false;
+        }
+      )
+      .addMatcher(
+        (action) => isRejectedAction(action, name),
+        (state, action) => {
+          state.error = action.error.message || "Something went wrong";
+          state.loading = false;
+        }
+      );
   },
 });
-
-const isPendingAction = (action: AnyAction) => {
-  return action.type.endsWith("/pending") && action.type.includes("orders/");
-};
-const isRejectedAction = (action: AnyAction) =>
-  action.type.endsWith("/rejected") && action.type.includes("orders/");
-
-const isFulfilledAction = (action: AnyAction) =>
-  action.type.endsWith("/fulfilled") && action.type.includes("orders/");
 
 export default ordersSlice.reducer;

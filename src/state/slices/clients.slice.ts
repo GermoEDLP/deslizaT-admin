@@ -11,9 +11,12 @@ import {
 } from "../thunks";
 import { IconMail, IconMapPin, IconPhone, IconUser } from "@tabler/icons-react";
 import { Bike, Client } from "../interfaces";
+import { isFulfilledAction, isPendingAction, isRejectedAction } from ".";
+
+const name = "clients";
 
 const clientsSlice = createSlice({
-  name: "clients",
+  name,
   initialState: clientsInitialState,
   reducers: {
     search: (state, action: PayloadAction<string>) => {
@@ -28,69 +31,31 @@ const clientsSlice = createSlice({
           c.phone?.toLowerCase().includes(s)
         );
       });
-      state.loading = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getClients.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(getClients.fulfilled, (state, action) => {
         state.clients = action.payload;
         state.baseClients = action.payload;
-        state.loading = false;
-      })
-      .addCase(getClients.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Something went wrong";
-      })
-      .addCase(getClient.pending, (state) => {
-        state.loading = true;
       })
       .addCase(getClient.fulfilled, (state, action) => {
         state.client = action.payload;
         state.clientInfo = setClientInfo(action.payload);
-        state.loading = false;
-      })
-      .addCase(getClient.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Something went wrong";
-      })
-      .addCase(createClient.pending, (state) => {
-        state.loading = true;
       })
       .addCase(createClient.fulfilled, (state, action) => {
         state.clients.push(action.payload);
-        state.loading = false;
-      })
-      .addCase(createClient.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Something went wrong";
-      })
-      .addCase(updateClient.pending, (state) => {
-        state.loading = true;
       })
       .addCase(updateClient.fulfilled, (state, action) => {
-        state.client = action.payload;
+        state.client = {
+          ...action.payload,
+          bikes: state.client?.bikes || [],
+        };
         state.clientInfo = setClientInfo(action.payload);
-        state.loading = false;
-      })
-      .addCase(updateClient.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Something went wrong";
-      })
-      .addCase(deleteClient.pending, (state) => {
-        state.loading = true;
       })
       .addCase(deleteClient.fulfilled, (state, action) => {
         state.client = null;
         state.clientInfo = null;
-        state.loading = false;
-      })
-      .addCase(deleteClient.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Something went wrong";
       })
       // BIKES
       .addCase(createBike.fulfilled, (state, action) => {
@@ -100,7 +65,6 @@ const clientsSlice = createSlice({
             bikes: [...(state.client?.bikes || []), action.payload],
           };
         }
-        state.loading = false;
       })
       .addCase(updateBike.fulfilled, (state, action) => {
         if (state.client) {
@@ -111,8 +75,27 @@ const clientsSlice = createSlice({
             ),
           };
         }
-        state.loading = false;
-      });
+      })
+
+      .addMatcher(
+        (action) => isPendingAction(action, name),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        (action) => isFulfilledAction(action, name),
+        (state) => {
+          state.loading = false;
+        }
+      )
+      .addMatcher(
+        (action) => isRejectedAction(action, name),
+        (state, action) => {
+          state.error = action.error.message || "Something went wrong";
+          state.loading = false;
+        }
+      );
   },
 });
 

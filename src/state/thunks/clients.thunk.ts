@@ -18,7 +18,7 @@ export const getClient = createAsyncThunk(
 );
 
 export const createClient = createAsyncThunk(
-  "clients/createClient",
+  "clients/createClient/noti",
   async (payload: CreateClientPayload) => {
     const response = await clientsSvc.createCient(payload);
     return response;
@@ -26,7 +26,7 @@ export const createClient = createAsyncThunk(
 );
 
 export const updateClient = createAsyncThunk(
-  "clients/updateClient",
+  "clients/updateClient/noti",
   async (payload: Partial<Client>) => {
     const response = await clientsSvc.updateClient(payload);
     return response;
@@ -34,7 +34,7 @@ export const updateClient = createAsyncThunk(
 );
 
 export const deleteClient = createAsyncThunk(
-  "clients/deleteClient",
+  "clients/deleteClient/noti",
   async (id: string) => {
     const response = await clientsSvc.deleteClient(id);
     return response;

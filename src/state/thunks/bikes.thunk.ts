@@ -15,7 +15,7 @@ export const getBike = createAsyncThunk("bikes/getBike", async (id: string) => {
 });
 
 export const createBike = createAsyncThunk(
-  "bikes/createBike",
+  "bikes/createBike/noti",
   async (payload: CreateBikePayload) => {
     const response = await bikesSvc.createBike(payload);
     return response;
@@ -23,9 +23,17 @@ export const createBike = createAsyncThunk(
 );
 
 export const updateBike = createAsyncThunk(
-  "bikes/updateBike",
+  "bikes/updateBike/noti",
   async (payload: UpdateBikePayload) => {
     const response = await bikesSvc.updateBike(payload);
+    return response;
+  }
+);
+
+export const deleteBike = createAsyncThunk(
+  "bikes/deleteBike/noti",
+  async (id: string) => {
+    const response = await bikesSvc.deleteBike(id);
     return response;
   }
 );

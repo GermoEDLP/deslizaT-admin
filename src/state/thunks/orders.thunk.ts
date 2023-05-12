@@ -23,7 +23,7 @@ export const getOrder = createAsyncThunk(
 );
 
 export const createOrder = createAsyncThunk(
-  "orders/createOrder",
+  "orders/createOrder/noti",
   async (payload: CreateOrderPayload) => {
     const response = await ordersSvc.createOrder(payload);
     return response;
@@ -31,7 +31,7 @@ export const createOrder = createAsyncThunk(
 );
 
 export const updateOrder = createAsyncThunk(
-  "orders/updateOrder",
+  "orders/updateOrder/noti",
   async (payload: UpdateOrderPayload) => {
     const response = await ordersSvc.updateOrder(payload);
     return response;
@@ -39,7 +39,7 @@ export const updateOrder = createAsyncThunk(
 );
 
 export const updateStatusOrder = createAsyncThunk(
-  "orders/updateStatusOrder",
+  "orders/updateStatusOrder/noti",
   async (payload: UpdateStatusOrderPayload) => {
     const response = await ordersSvc.updateOrderStatus(payload);
     return response;
@@ -47,7 +47,7 @@ export const updateStatusOrder = createAsyncThunk(
 );
 
 export const deleteOrder = createAsyncThunk(
-  "orders/deleteOrder",
+  "orders/deleteOrder/noti",
   async (id: string) => {
     const response = await ordersSvc.deleteOrder(id);
     return response;

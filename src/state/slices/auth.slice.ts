@@ -3,8 +3,10 @@ import { authInitialState } from "../initials";
 import { User } from "../interfaces";
 import { authLogin } from "../thunks";
 
+const name = "auth";
+
 const authSlice = createSlice({
-  name: "auth",
+  name,
   initialState: authInitialState,
   reducers: {
     logout: (state) => {

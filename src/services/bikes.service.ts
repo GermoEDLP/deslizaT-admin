@@ -85,4 +85,17 @@ export class BikesService {
     const data = await response.json();
     return data;
   }
+
+  async deleteBike(id: string): Promise<Bike> {
+    const url = `${this.server_url}/${id}`;
+    const response = await fetch(url, {
+      method: "DELETE",
+    });
+    if (response.status !== 200 && response.status !== 201) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
+    const data = await response.json();
+    return data;
+  }
 }

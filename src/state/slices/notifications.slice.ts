@@ -8,6 +8,10 @@ import {
   NotificationsShowPayload,
 } from "../interfaces";
 import { createBike, createClient, updateBike, updateClient } from "../thunks";
+import {
+  triggerRejectNotification,
+  triggerSuccessNotification,
+} from "./helpers.slice";
 
 const notificationsSlice = createSlice({
   name: "notifications",
@@ -55,58 +59,105 @@ const notificationsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // BIKE
-      .addCase(createBike.fulfilled, (state) => {
-        state.notification = showNotification(
-          "Bicicleta creada correctamente",
-          NotificationsColor.SUCCESS
-        ) as any;
-      })
-      .addCase(createBike.rejected, (state, action) => {
-        state.notification = showNotification(
-          "Hubo un error al crear la bicicleta: " + action.error.message,
-          NotificationsColor.ERROR
-        ) as any;
-      })
-      .addCase(updateBike.fulfilled, (state) => {
-        state.notification = showNotification(
-          "Bicicleta actualizada correctamente",
-          NotificationsColor.SUCCESS
-        ) as any;
-      })
-      .addCase(updateBike.rejected, (state, action) => {
-        state.notification = showNotification(
-          "Hubo un error al actualizar la bicicleta: " + action.error.message,
-          NotificationsColor.ERROR
-        ) as any;
-      })
-      // CLIENT
       .addCase(createClient.fulfilled, (state, action) => {
+        console.log(action.meta);
+
+        state.loading = false;
+      })
+      .addMatcher(triggerSuccessNotification, (state, action) => {
+        const type = action.type.split("/");
+        const name = type[0] as Name;
+        const thunk = type[1] as Thunk;
         state.notification = showNotification(
-          "Cliente creado correctamente",
+          NamesExtraType?.[name]?.[thunk]?.success || "Exito",
           NotificationsColor.SUCCESS
         ) as any;
       })
-      .addCase(createClient.rejected, (state, action) => {
+      .addMatcher(triggerRejectNotification, (state, action) => {
+        const type = action.type.split("/");
+        const name = type[0] as Name;
+        const thunk = type[1] as Thunk;
         state.notification = showNotification(
-          "Hubo un error al crear el cliente: " + action.error.message,
-          NotificationsColor.SUCCESS
-        ) as any;
-      })
-      .addCase(updateClient.fulfilled, (state, action) => {
-        state.notification = showNotification(
-          "Cliente editado correctamente",
-          NotificationsColor.SUCCESS
-        ) as any;
-      })
-      .addCase(updateClient.rejected, (state, action) => {
-        state.notification = showNotification(
-          "Hubo un error al editar el cliente: " + action.error.message,
-          NotificationsColor.SUCCESS
+          NamesExtraType?.[name]?.[thunk]?.error || "Error",
+          NotificationsColor.ERROR
         ) as any;
       });
   },
 });
+
+export enum Name {
+  orders = "orders",
+  clients = "clients",
+  bikes = "bikes",
+  // auth = "auth",
+}
+
+export enum Thunk {
+  createOrder = "createOrder",
+  updateOrder = "updateOrder",
+  deleteOrder = "deleteOrder",
+  updateStatusOrder = "updateStatusOrder",
+  createClient = "createClient",
+  updateClient = "updateClient",
+  deleteClient = "deleteClient",
+  createBike = "createBike",
+  updateBike = "updateBike",
+  deleteBike = "deleteBike",
+}
+
+export interface ExtraType {
+  success: string;
+  error: string;
+}
+
+export const NamesExtraType: Record<Name, Partial<Record<Thunk, ExtraType>>> = {
+  [Name.orders]: {
+    [Thunk.createOrder]: {
+      success: "Orden creada correctamente",
+      error: "Error al crear la orden",
+    },
+    [Thunk.updateOrder]: {
+      success: "Orden actualizada correctamente",
+      error: "Error al actualizar la orden",
+    },
+    [Thunk.deleteOrder]: {
+      success: "Orden eliminada correctamente",
+      error: "Error al eliminar la orden",
+    },
+    [Thunk.updateStatusOrder]: {
+      success: "Estado de la orden actualizado correctamente",
+      error: "Error al actualizar el estado de la orden",
+    },
+  },
+  [Name.clients]: {
+    [Thunk.createClient]: {
+      success: "Cliente creado correctamente",
+      error: "Error al crear el cliente",
+    },
+    [Thunk.updateClient]: {
+      success: "Cliente actualizado correctamente",
+      error: "Error al actualizar el cliente",
+    },
+    [Thunk.deleteClient]: {
+      success: "Cliente eliminado correctamente",
+      error: "Error al eliminar el cliente",
+    },
+  },
+  [Name.bikes]: {
+    [Thunk.createBike]: {
+      success: "Bicicleta creada correctamente",
+      error: "Error al crear la bicicleta",
+    },
+    [Thunk.updateBike]: {
+      success: "Bicicleta actualizada correctamente",
+      error: "Error al actualizar la bicicleta",
+    },
+    [Thunk.deleteBike]: {
+      success: "Bicicleta eliminada correctamente",
+      error: "Error al eliminar la bicicleta",
+    },
+  },
+};
 
 export const showNotification = (
   payload: string | NotificationsShowPayload,
@@ -118,8 +169,6 @@ export const showNotification = (
       ...defaultNotificationsProps,
       color,
     };
-    console.log(d);
-
     return d;
   }
   return {
