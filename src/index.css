@@ -7,3 +7,7 @@
     height: 1.5rem;
     color: #868686;
 }
+
+textarea[color="dimmed"] {
+  color: #868e96 !important;
+}
