@@ -20,8 +20,6 @@ import { OrderItem } from "../../components/order/order-item";
 
 export const OrderPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [change, setChange] = useState<string | null>();
-  const [value, setValue] = useState<string>("");
   const navigate = useNavigate();
   const { order, loading } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
@@ -49,14 +47,12 @@ export const OrderPage = () => {
       <Divider my={20} />
 
       <Grid>
-        {order && <OrderItem order={order} field="symptoms" label="Problema" />}
+        {order && <OrderItem field="symptoms" label="Problema" />}
+        {order && <OrderItem field="diagnostic" label="Diagnostico previo" />}
         {order && (
-          <OrderItem
-            order={order}
-            field="diagnostic"
-            label="Diagnostico previo"
-          />
+          <OrderItem field="taskDescription" label="Tareas realizadas" />
         )}
+        {order && <OrderItem field="finalDetails" label="Detalles finales" />}
       </Grid>
     </>
   );

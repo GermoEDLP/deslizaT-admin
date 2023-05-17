@@ -38,6 +38,7 @@ const ordersSlice = createSlice({
         });
         state.orders = newOrders;
         state.baseOrders = newOrders;
+        state.order = action.payload;
       })
       .addCase(updateStatusOrder.fulfilled, (state, action) => {
         const newOrders = state.orders.map((order) => {

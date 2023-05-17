@@ -58,8 +58,9 @@ export class OrdersService {
 
   async updateOrder(order: UpdateOrderPayload): Promise<Order> {
     const url = `${this.server_url}/update/${order._id}`;
+    const { _id, ...rest } = order;
     const body = {
-      ...order,
+      ...rest,
     };
     const response = await fetch(url, {
       method: "PATCH",
